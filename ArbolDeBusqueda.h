@@ -163,8 +163,8 @@ public:
                 vector<Coordenada*> proximos_hijos = getMovimientosPosibles(resultado->getCoordenada());
                 Nodo *hijoPasado = nullptr;
 
-                sort(proximos_hijos.begin(),proximos_hijos.end(), [this](Coordenada* a, Coordenada* b) {
-                    return (compararfH(a, b));
+                std:sort(proximos_hijos.begin(),proximos_hijos.end(), [this](Coordenada* a, Coordenada* b) {
+                return (compararfH(a, b));
                 });
 
                 for (Coordenada* cadena_del_hijo: proximos_hijos) {
@@ -202,7 +202,22 @@ public:
 
     bool compararfH(Coordenada* i1, Coordenada* i2)
     {
-        return (this->mapa->getfH(i1) > this->mapa->getfH(i2));
+        return (this->mapa->getfH(i1) + fG(i1) < this->mapa->getfH(i2) + fG(i2));
+    }
+
+    int fG(Coordenada* i1) {
+        int fG_X, fG_Y;
+        if(this->resultado_esperado->getY() < i1->getY()) {
+            fG_Y = i1->getY() - this->resultado_esperado->getY();
+        } else {
+            fG_Y = this->resultado_esperado->getY() - i1->getY();
+        }
+        if (this->resultado_esperado->getX() < i1->getX()) {
+            fG_X = i1->getX() - this->resultado_esperado->getX();
+        } else {
+            fG_X = this->resultado_esperado->getX() - i1->getX();
+        }
+        return fG_X + fG_Y;
     }
 
 
